@@ -18,3 +18,6 @@ class BaseModel:
         self.submitindex = None
         self.params = config["params"]
         return
+
+    def has_params(self):
+        return os.path.isfile(self.params)
