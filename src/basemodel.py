@@ -24,3 +24,6 @@ class BaseModel:
 
     def init_train_data(self):
         raise NotImplementedError("This is BaseModel class")
+
+    def init_submit_data(self, mode):
+        raise NotImplementedError("This is BaseModel class")
