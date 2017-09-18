@@ -21,3 +21,6 @@ class BaseModel:
 
     def has_params(self):
         return os.path.isfile(self.params)
+
+    def init_train_data(self):
+        raise NotImplementedError("This is BaseModel class")
