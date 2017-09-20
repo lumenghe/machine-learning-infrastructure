@@ -30,3 +30,6 @@ class BaseModel:
 
     def train(self):
         raise NotImplementedError("This is BaseModel class")
+
+    def save(self):
+        raise NotImplementedError("This is BaseModel class")
