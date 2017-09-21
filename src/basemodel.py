@@ -36,3 +36,6 @@ class BaseModel:
 
     def load(self):
         raise NotImplementedError("This is BaseModel class")
+
+    def predict_from_x(self, x):
+        raise NotImplementedError("This is BaseModel class")
