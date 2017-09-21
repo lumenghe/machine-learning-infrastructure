@@ -33,3 +33,6 @@ class BaseModel:
 
     def save(self):
         raise NotImplementedError("This is BaseModel class")
+
+    def load(self):
+        raise NotImplementedError("This is BaseModel class")
