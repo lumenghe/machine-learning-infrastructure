@@ -39,3 +39,7 @@ class BaseModel:
 
     def predict_from_x(self, x):
         raise NotImplementedError("This is BaseModel class")
+
+    def predict(self, cat):
+        x = self.get_x(cat)
+        return self.predict_from_x(x)
