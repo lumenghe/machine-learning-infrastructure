@@ -43,3 +43,15 @@ class BaseModel:
     def predict(self, cat):
         x = self.get_x(cat)
         return self.predict_from_x(x)
+
+    def get_x(self, cat):
+        if cat == "train":
+            return self.xtrain.values
+        elif cat == "valid":
+            return self.xvalid.values
+        elif cat == "test":
+            return self.xtest.values
+        elif cat == "submit":
+            return self.xsubmit.values
+        else:
+            raise ValueError("Unknown category '{}'".format(cat))
