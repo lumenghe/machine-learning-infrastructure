@@ -55,3 +55,13 @@ class BaseModel:
             return self.xsubmit.values
         else:
             raise ValueError("Unknown category '{}'".format(cat))
+
+    def get_y(self, cat):
+        if cat == "train":
+            return self.ytrain.values
+        elif cat == "valid":
+            return self.yvalid.values
+        elif cat == "test":
+            return self.ytest.values
+        else:
+            raise ValueError("Unknown category '{}'".format(cat))
