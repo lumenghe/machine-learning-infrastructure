@@ -65,3 +65,10 @@ class BaseModel:
             return self.ytest.values
         else:
             raise ValueError("Unknown category '{}'".format(cat))
+
+    def eval(self):
+        if self.config["eval_cat"] is not None:
+            full_eval(self, self.config)
+        if self.config["submit"]:
+            self.clean_train_data()
+            submit_for_eval(self, self.config)
