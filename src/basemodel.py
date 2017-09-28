@@ -72,3 +72,21 @@ class BaseModel:
         if self.config["submit"]:
             self.clean_train_data()
             submit_for_eval(self, self.config)
+
+    def init_train_data_base(self):
+        config = self.config
+        dataset = merge_data(config=config, labeled_only=True)
+        if config["additional_features"] is not None:
+            dataset = merge_additional_features(dataset, config, "train")
+        if config["data_split_mode"] == "date":
+            self.train, self.valid, self.test = split_data_by_date(dataset, config)
+        elif config["data_split_mode"] == "random":
+            self.train, self.valid, self.test = split_data_random(dataset, config)
+        else:
+            raise ValueError("unknown data split mode '{}'".format(config["data_split_mode"]))
+        self.train = preprocess(self.train, config, self, mode="train")
+        self.valid = preprocess(self.valid, config, self, mode="valid", no_reduction=True)
+        self.test = preprocess(self.test, config, self, mode="test", no_reduction=True)
+        self.xtrain, self.ytrain = get_xy(self.train, config)
+        self.xvalid, self.yvalid = get_xy(self.valid, config)
+        self.xtest, self.ytest = get_xy(self.test, config)
