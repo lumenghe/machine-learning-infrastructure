@@ -90,3 +90,9 @@ class BaseModel:
         self.xtrain, self.ytrain = get_xy(self.train, config)
         self.xvalid, self.yvalid = get_xy(self.valid, config)
         self.xtest, self.ytest = get_xy(self.test, config)
+
+    def clean_train_data(self):
+        del self.xtrain; del self.ytrain
+        del self.xvalid; del self.yvalid
+        del self.xtest; del self.ytest
+        gc.collect()
