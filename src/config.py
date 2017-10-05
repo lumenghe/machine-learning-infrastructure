@@ -45,3 +45,11 @@ def get_typed_value(s, key_type):
         return s
     else:
         raise ValueError("Unknown type {}".format(key_type))
+
+class Config(object):
+    def __init__(self, filename=None, vsep="=", tsep=":"):
+        self.default = OrderedDict()
+        self.sections = OrderedDict()
+        self.filename = None
+        if filename is not None:
+            self.from_file(filename, vsep=vsep, tsep=tsep)
