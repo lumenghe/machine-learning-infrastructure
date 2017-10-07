@@ -53,3 +53,15 @@ class Config(object):
         self.filename = None
         if filename is not None:
             self.from_file(filename, vsep=vsep, tsep=tsep)
+
+    def __add_value(self, key, value, section):
+        if section is None:
+            if key in self.default:
+                raise ValueError("default key '{}' appears twice".format(key))
+            self.default[key] = value
+        else:
+            if section not in self.sections:
+                self.sections[section] = OrderedDict()
+            if key in self.sections[section]:
+                raise ValueError("key '{}' appears twice in section '{}'".format(key, section))
+            self.sections[section][key]= value

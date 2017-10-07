@@ -96,3 +96,12 @@ class BaseModel:
         del self.xvalid; del self.yvalid
         del self.xtest; del self.ytest
         gc.collect()
+
+    def init_submit_data_base(self, mode):
+        config = self.config
+        datasubmit = merge_data(config=config, labeled_only=False)
+        if config["additional_features"] is not None:
+            datasubmit = merge_additional_features(datasubmit, config, mode)
+        datasubmit = preprocess(datasubmit, config, self, mode="submit", no_reduction=True)
+        self.xsubmit = get_x(datasubmit, config)
+        self.submitindex = datasubmit.index
