@@ -105,3 +105,7 @@ class BaseModel:
         datasubmit = preprocess(datasubmit, config, self, mode="submit", no_reduction=True)
         self.xsubmit = get_x(datasubmit, config)
         self.submitindex = datasubmit.index
+
+    def clean_submit_data(self):
+        del self.xsubmit
+        gc.collect()
