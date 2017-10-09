@@ -65,3 +65,11 @@ class Config(object):
             if key in self.sections[section]:
                 raise ValueError("key '{}' appears twice in section '{}'".format(key, section))
             self.sections[section][key]= value
+
+    def __getitem__(self, item):
+        if isinstance(item, tuple):
+            section = item[0]
+            key = item[1]
+            return self.sections.get(section, {}).get(key, None)
+        else:
+            return self.default.get(item, None)
