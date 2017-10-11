@@ -79,3 +79,20 @@ def read_properties():
         print("Created pickle file: {}".format(constant.PROPERTIES_2016_PKL))
     _df_properties = df
     return df.copy()
+
+def read_train(drop_duplicates=True):
+    print("Reading TRAIN DATA... ", end="", flush=True)
+    if os.path.exists(constant.TRAIN_2016_PKL):
+        df = pd.read_pickle(constant.TRAIN_2016_PKL)
+    else:
+        df = pd.read_csv(constant.TRAIN_2016,
+            header = 0,
+            index_col = 0,
+            parse_dates = [2],
+            infer_datetime_format = True,
+            )
+        df.to_pickle(constant.TRAIN_2016_PKL)
+        print("Created pickle file: {}".format(constant.TRAIN_2016_PKL))
+    df = df.reset_index().drop_duplicates(subset="parcelid", keep="last").set_index("parcelid")
+    _df_train = df
+    return df.copy()
