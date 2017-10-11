@@ -73,3 +73,11 @@ class Config(object):
             return self.sections.get(section, {}).get(key, None)
         else:
             return self.default.get(item, None)
+
+    def __contains__(self, item):
+        if isinstance(item, tuple):
+            section = item[0]
+            key = item[1]
+            return key in self.sections.get(section, {})
+        else:
+            return item in self.default
