@@ -81,3 +81,44 @@ class Config(object):
             return key in self.sections.get(section, {})
         else:
             return item in self.default
+
+    def from_file(self, filename, vsep="=", tsep=":"):
+        section = None
+        with open(filename) as f:
+            self.filename = filename
+            for i, line in enumerate(f):
+                line = line.strip()
+                if line.startswith("#") or line == "":
+                    continue
+                if line.startswith("[") and line.endswith("]"):
+                    section = line[1:-1]
+                    continue
+                l = line.split(vsep, 1)
+                if len(l) < 2:
+                    raise ValueError("wrong format at line {}: {}", i+1, line)
+                key = l[0].strip()
+                value = l[1].strip()
+                # typed key
+                l = key.split(tsep)
+                key_type = None
+                is_list = False
+                if len(l) == 2:
+                    key_type = l[1].strip()
+                    key = l[0].strip()
+                    if key_type == "list" or (key_type.startswith("list(") and key_type.endswith(")")):
+                        if key_type == "list":
+                            key_type = None
+                        else:
+                            key_type = key_type.rstrip(")").split("list(")[1].strip()
+                        is_list = True
+                if value == "None":
+                    value = None
+                elif value == "False":
+                    value = False
+                elif value == "True":
+                    value = True
+                elif "," in value and not (value.startswith('"') and value.endswith('"')) or is_list:
+                    value = [get_typed_value(x.strip(), key_type) for x in value.split(",")]
+                else:
+                    value = get_typed_value(value, key_type)
+                self.__add_value(key, value, section)
