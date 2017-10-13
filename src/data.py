@@ -96,3 +96,11 @@ def read_train(drop_duplicates=True):
     df = df.reset_index().drop_duplicates(subset="parcelid", keep="last").set_index("parcelid")
     _df_train = df
     return df.copy()
+
+def split_data_by_date(df, config):
+    print("Splitting Data by date... ", end="", flush=True)
+    train = df.loc[df.apply(lambda row: config["train_start"] <= row['transactiondate'] < config["train_end"], axis=1)]
+    valid = df.loc[df.apply(lambda row: config["valid_start"] <= row['transactiondate'] < config["valid_end"], axis=1)]
+    test = df.loc[df.apply(lambda row: config["test_start"] <= row['transactiondate'] < config["test_end"], axis=1)]
+    print("Done.", flush=True)
+    return train, valid, test
