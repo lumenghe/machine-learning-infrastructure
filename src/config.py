@@ -122,19 +122,3 @@ class Config(object):
                 else:
                     value = get_typed_value(value, key_type)
                 self.__add_value(key, value, section)
-
-    def __str__(self):
-        l = []
-        s = "~~~~~~~~~~~~~~~~~~~~ {} ~~~~~~~~~~~~~~~~~~~~\n\n".format(self.filename)
-        for k,v in self.default.items():
-             s += "{} = {}\n".format(k, v)
-        l.append(s)
-        if len(self.sections):
-            for section, d in self.sections.items():
-                s = "[{}]\n".format(section)
-                for k,v in d.items():
-                    s += "{} = {}\n".format(k, v)
-                l.append(s)
-        s = "~~~~~~~~~~~~~~~~~~~~ {} ~~~~~~~~~~~~~~~~~~~~\n".format(self.filename)
-        l.append(s)
-        return "\n".join(l)
