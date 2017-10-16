@@ -138,3 +138,15 @@ class Config(object):
         s = "~~~~~~~~~~~~~~~~~~~~ {} ~~~~~~~~~~~~~~~~~~~~\n".format(self.filename)
         l.append(s)
         return "\n".join(l)
+
+if __name__ == "__main__":
+    import sys, os
+    try:
+        filename = sys.argv[1]
+        assert os.path.isfile(filename)
+    except:
+        print("Please provide a correct file")
+        sys.exit(0)
+    config = Config(sys.argv[1])
+    print(config)
+    print("Config parsing successful!")

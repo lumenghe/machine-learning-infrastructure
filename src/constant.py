@@ -19,3 +19,4 @@ FEATURE_FACTORY_TEST_1612 = os.path.expandvars("$ZILLOW/features/test/1612")
 FEATURE_FACTORY_TEST_1710 = os.path.expandvars("$ZILLOW/features/test/1710")
 FEATURE_FACTORY_TEST_1711 = os.path.expandvars("$ZILLOW/features/test/1711")
 FEATURE_FACTORY_TEST_1712 = os.path.expandvars("$ZILLOW/features/test/1712")
+FEATURE_FACTORY_COMPRESSION = "gzip"
