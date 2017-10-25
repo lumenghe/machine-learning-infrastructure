@@ -104,3 +104,15 @@ def split_data_by_date(df, config):
     test = df.loc[df.apply(lambda row: config["test_start"] <= row['transactiondate'] < config["test_end"], axis=1)]
     print("Done.", flush=True)
     return train, valid, test
+
+def split_data_random(df, config):
+    print("Splitting Data at random... ", end="", flush=True)
+    df = df.sample(frac=1, random_state=config["random_seed"])
+    length = len(df)
+    split1 = int(length * config["random_split_ratio"][0])
+    split2 = int(length * config["random_split_ratio"][1])
+    train = df.iloc[:split1]
+    valid = df.iloc[split1:split2]
+    test = df.iloc[split2:]
+    print("Done.", flush=True)
+    return train, valid, test
