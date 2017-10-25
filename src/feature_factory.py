@@ -27,13 +27,3 @@ def prev_month(ym):
         return None
     else:
         return (ym - 1)
-
-def write_feats(df, path, featname):
-    fpath = os.path.join(path, featname + ".pkl")
-    df.to_pickle(fpath, constant.FEATURE_FACTORY_COMPRESSION)
-    print("    Wrote: {}".format(fpath))
-
-def read_feats(path, featname):
-    fpath = os.path.join(path, featname + ".pkl")
-    df = pd.read_pickle(fpath, constant.FEATURE_FACTORY_COMPRESSION)
-    return df
