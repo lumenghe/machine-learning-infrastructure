@@ -71,3 +71,13 @@ def dump_static(featname, alldf, traindf, work_all, work_train):
     feats.index.name = alldf.index.name
     for m, path in TESTPATHS:
         write_feats(feats, path, featname)
+
+def create_log_num(featname, alldf, traindf, work_all, work_train):
+    # use log
+    work_all = np.log(work_all)
+    work_train = np.log(work_train)
+    dump_static(featname, alldf, traindf, work_all, work_train)
+
+
+"""
+Factories
