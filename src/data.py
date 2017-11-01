@@ -122,3 +122,8 @@ def get_xy(dataset, config):
     x = dataset.drop([target], axis=1) # forbid access to target
     y = dataset[[target]] # usually is "logerror"
     return x,y
+
+def get_x(dataset, config):
+    target = config["target"]
+    x = dataset.drop([target], axis=1) # forbid access to target
+    return x
