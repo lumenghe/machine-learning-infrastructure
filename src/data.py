@@ -159,3 +159,31 @@ def merge_data(config=None, labeled_only=True):
             dataset = dataset.drop(drops, axis=1)
     print("Done.", flush=True)
     return dataset
+
+def merge_additional_features(dataset, config, mode):
+    print("Merging additional features..", end="", flush=True)
+    features = config["additional_features"]
+    if features is None:
+        raise ValueError("no additional features defined")
+    mapmode = {
+        "train": constant.FEATURE_FACTORY_TRAIN,
+        "test_1610": constant.FEATURE_FACTORY_TEST_1610,
+        "test_1611": constant.FEATURE_FACTORY_TEST_1611,
+        "test_1612": constant.FEATURE_FACTORY_TEST_1612,
+        "test_1710": constant.FEATURE_FACTORY_TEST_1710,
+        "test_1711": constant.FEATURE_FACTORY_TEST_1711,
+        "test_1712": constant.FEATURE_FACTORY_TEST_1712,
+    }
+    if not mode in mapmode:
+        raise ValueError("Unknown mode '{}'".format(mode))
+    path = mapmode[mode]
+    dfs = []
+    for featname in features:
+        print(". {}".format(featname), end="", flush=True)
+        df = pd.read_pickle(os.path.join(path, featname + ".pkl"), compression="gzip")
+        dfs.append(df)
+    add_feats = pd.concat(dfs, axis=1)
+    print(". Done.", flush=True)
+    return dataset.join(add_feats, how="left")
+
+
