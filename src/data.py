@@ -127,3 +127,35 @@ def get_x(dataset, config):
     target = config["target"]
     x = dataset.drop([target], axis=1) # forbid access to target
     return x
+
+def merge_data(config=None, labeled_only=True):
+    print("Merging data... ", end="", flush=True)
+    df_prop = read_properties()
+    df_train = read_train()
+    if labeled_only:
+        dataset = df_prop.join(df_train, how="right")
+    else:
+        dataset = df_prop.join(df_train, how="left")
+    if config is not None:
+        target = config["target"]
+        drops = config["drops"]
+        features = config["features"]
+        if features is not None:
+            if not isinstance(features, list):
+                raise ValueError("Config -> features should be a list")
+            features = list(features)
+            add_features = config["additional_features"]
+            if add_features is None:
+                add_features = []
+            if not (target in dataset.columns or target in add_features):
+                raise ValueError("target '{}' is neither in original features nor in additional features".format(target))
+            if target in dataset.columns:
+                features.append(target)
+            dataset = dataset[features]
+        if drops is not None:
+            if target in drops:
+                raise RuntimeError("Cannot drop target")
+            drops = [d for d in drops if d in dataset.columns]
+            dataset = dataset.drop(drops, axis=1)
+    print("Done.", flush=True)
+    return dataset
