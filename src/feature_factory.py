@@ -136,3 +136,58 @@ def past_month_transactions_in_zipcode(featname, traindf, alldf):
         feats.index.name = alldf.index.name
         write_feats(feats, path, featname)
     return
+
+def past_month_mean_error_in_zipcode(featname, traindf, alldf):
+    distribution = defaultdict(dict)
+    average = dict()
+    workdf = traindf.copy()
+    workdf["transactionmonth"] = workdf["transactiondate"].apply(lambda d: int(d.strftime("%y%m")))
+    for (r, m), s in workdf.groupby(["regionidzip", "transactionmonth"]):
+        distribution[r][m] = s['logerror'].mean()
+    for r in distribution:
+        average[r] = 0
+        ct = 0
+        for m, v in distribution[r].items():
+            if 1601 <= m <= 1609 or 1701 <= m <= 1709:
+                ct += 1
+                average[r] += v
+        average[r] = average[r] / float(ct) if ct else 0.
+    # Generate train features
+    prevtrans = []
+    nanct = 0
+    for i, row in workdf[["regionidzip", "transactionmonth"]].iterrows():
+        prevm = prev_month(int(row["transactionmonth"]))
+        r = row["regionidzip"]
+        if math.isnan(r):
+            prevtrans.append(np.nan)
+            nanct += 1
+        else:
+            r = int(r)
+            prevtrans.append(distribution[r].get(prevm, average[r]))
+    print("    NaN for train: {} / {}".format(nanct, len(workdf)))
+    feats = pd.DataFrame(prevtrans, index=workdf.index, columns=[featname])
+    feats.index.name = workdf.index.name
+    write_feats(feats, constant.FEATURE_FACTORY_TRAIN, featname)
+    # Generate test features
+    nanct = 0
+    for m, path in TESTPATHS:
+        prevtrans = []
+        prevm = prev_month(m)
+        for i, r in alldf["regionidzip"].iteritems():
+            if math.isnan(r):
+                prevtrans.append(np.nan)
+                if m == 1610:
+                    nanct += 1
+            else:
+                if r in distribution:
+                    prevtrans.append(distribution[r].get(prevm, average[r]))
+                else:
+                    prevtrans.append(np.nan)
+                    if m == 1610:
+                        nanct += 1
+        if m == 1610:
+            print("    NaN for test: {} / {}".format(nanct, len(alldf)))
+        feats = pd.DataFrame(prevtrans, index=alldf.index, columns=[featname])
+        feats.index.name = alldf.index.name
+        write_feats(feats, path, featname)
+    return

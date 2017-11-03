@@ -187,3 +187,10 @@ def merge_additional_features(dataset, config, mode):
     return dataset.join(add_feats, how="left")
 
 
+
+if __name__ == "__main__":
+    config = Config("test_config.cfg")
+    df_prop = return_dataset(config, labeled_only=True)
+    df_prop.sort_values(by='logerror').to_csv('sort_error.csv')
+
+
