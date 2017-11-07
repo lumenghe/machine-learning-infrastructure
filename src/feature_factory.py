@@ -191,3 +191,29 @@ def past_month_mean_error_in_zipcode(featname, traindf, alldf):
         feats.index.name = alldf.index.name
         write_feats(feats, path, featname)
     return
+
+def time_from_origin_to_transaction(featname, traindf, alldf):
+    from datetime import datetime
+    origin_date = datetime(2016,1,1)
+    # Generate train features
+    time_to_origin = traindf["transactiondate"].apply(lambda t: (t - origin_date).days / 366.)
+    feats = pd.DataFrame(time_to_origin.values, index=traindf.index, columns=[featname])
+    feats.index.name = traindf.index.name
+    write_feats(feats, constant.FEATURE_FACTORY_TRAIN, featname)
+    # Generate test features
+    month2date = {
+            1610: datetime(2016,10,15),
+            1611: datetime(2016,11,15),
+            1612: datetime(2016,12,15),
+            1710: datetime(2017,10,15),
+            1711: datetime(2017,11,15),
+            1712: datetime(2017,12,15)
+        }
+    for m, path in TESTPATHS:
+        mid_date = month2date[m]
+        to_origin = (mid_date - origin_date).days / 366.
+        time_to_origin = [to_origin for i in range(len(alldf))]
+        feats = pd.DataFrame(time_to_origin, index=alldf.index, columns=[featname])
+        feats.index.name = alldf.index.name
+        write_feats(feats, path, featname)
+    return

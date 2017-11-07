@@ -29,3 +29,36 @@ def full_eval(model, config):
         plot_error_distribution(ypred, ytrue, title=title, output_fig=figname)
     return
 
+
+def sign_eval(model, config):
+    for cat in config["eval_cat"]:
+        ytrue = model.get_y(cat=cat)
+        if not len(ytrue):
+            print("{}: dataset empty.".format(cat))
+            continue
+        ypred = model.predict(cat=cat)
+        ypred_round = ypred.round()
+        apr = average_precision_score(ytrue, ypred)
+        prec = precision_score(ytrue, ypred_round)
+        rec = recall_score(ytrue, ypred_round)
+        fpr, tpr, _ = roc_curve(ytrue, ypred)
+        roc_auc = auc(fpr, tpr)
+        title = "{0}: P = {1:0.2f} ; R = {2:0.2f} ; avgP = {3:0.2f} ; AUC = {4:0.4f}".format(cat, prec, rec, apr, roc_auc)
+        print(title)
+        fig, ax = plt.subplots()
+        ax.plot(fpr, tpr, color='darkorange', lw=1, label='ROC curve (area = %0.2f)' % roc_auc)
+        ax.plot([0, 1], [0, 1], color='navy', lw=1, alpha=0.5, linestyle='--')
+        plt.xlim([0.0, 1.0])
+        plt.ylim([0.0, 1.0])
+        plt.grid()
+        plt.xlabel('False Positive Rate')
+        plt.ylabel('True Positive Rate')
+        ax.set_title(title)
+        ax.legend(loc="lower right")
+        if config["eval_fig"] is None:
+            plt.show()
+        else:
+            output_fig = config["eval_fig"]
+            figname, ext = os.path.splitext(output_fig)
+            output_fig = figname + "_" + cat + ext
+            fig.savefig(output_fig)
