@@ -217,3 +217,8 @@ def time_from_origin_to_transaction(featname, traindf, alldf):
         feats.index.name = alldf.index.name
         write_feats(feats, path, featname)
     return
+
+def yard_recorded(featname, traindf, alldf):
+    work_all = alldf["yardbuildingsqft26"].map(lambda x: 0 if x == "nan" else 1) | alldf["yardbuildingsqft17"].map(lambda x: 0 if math.isnan(x) else 1)
+    work_train = traindf["yardbuildingsqft26"].map(lambda x: 0 if x == "nan" else 1) | traindf["yardbuildingsqft17"].map(lambda x: 0 if math.isnan(x) else 1)
+    dump_static(featname, alldf, traindf, work_all, work_train)
