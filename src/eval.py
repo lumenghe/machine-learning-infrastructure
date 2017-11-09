@@ -62,3 +62,22 @@ def sign_eval(model, config):
             figname, ext = os.path.splitext(output_fig)
             output_fig = figname + "_" + cat + ext
             fig.savefig(output_fig)
+
+def submit_for_eval(model, config, cut_output=True):
+    print("Outputting predictions...")
+    filename = config["submit_file"]
+    df_sample = pd.read_csv(constant.SAMPLE_SUBMIT, index_col=0, dtype={"ParcelId": np.int64})
+    for month in ["1610", "1611", "1612", "1710", "1711", "1712"]:
+        print("Making predictions for {}.".format(month))
+        model.init_submit_data("test_{}".format(month))
+        if not (model.submitindex == df_sample.index).all():
+            raise ValueError("Submit sample index and model submit index are different for {}!".format(month))
+        ypred = model.predict(cat="submit")
+        df_sample["20" + month] = ypred
+        model.clean_submit_data()
+    print("Writing predictions to {}".format(filename))
+    if cut_output:
+        df_sample.to_csv(filename, float_format='%.4f', compression="gzip")
+    else:
+        df_sample.to_csv(filename, compression="gzip")
+    return
