@@ -222,3 +222,10 @@ def yard_recorded(featname, traindf, alldf):
     work_all = alldf["yardbuildingsqft26"].map(lambda x: 0 if x == "nan" else 1) | alldf["yardbuildingsqft17"].map(lambda x: 0 if math.isnan(x) else 1)
     work_train = traindf["yardbuildingsqft26"].map(lambda x: 0 if x == "nan" else 1) | traindf["yardbuildingsqft17"].map(lambda x: 0 if math.isnan(x) else 1)
     dump_static(featname, alldf, traindf, work_all, work_train)
+
+def log_tax_value(featname, traindf, alldf):
+    work_all = pd.to_numeric(alldf["taxvaluedollarcnt"].map(lambda x: np.nan if x == "nan" else x))
+    median = work_all.median() # for imputation
+    work_all = work_all.fillna(median)
+    work_train = pd.to_numeric(traindf["taxvaluedollarcnt"].map(lambda x: np.nan if x == "nan" else x)).fillna(median)
+    create_log_num(featname, alldf, traindf, work_all, work_train)
