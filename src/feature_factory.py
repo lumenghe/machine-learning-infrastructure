@@ -243,3 +243,10 @@ def log_tax_amount(featname, traindf, alldf):
     work_all = work_all.fillna(median)
     work_train = traindf["taxamount"].fillna(median)
     create_log_num(featname, alldf, traindf, work_all, work_train)
+
+def log_structure_tax_value(featname, traindf, alldf):
+    work_all = alldf["structuretaxvaluedollarcnt"]
+    median = work_all.median() # for imputation
+    work_all = work_all.fillna(median)
+    work_train = traindf["structuretaxvaluedollarcnt"].fillna(median)
+    create_log_num(featname, alldf, traindf, work_all, work_train)
