@@ -257,3 +257,10 @@ def log_lot_size(featname, traindf, alldf):
     work_all = work_all.fillna(median)
     work_train = traindf["lotsizesquarefeet"].fillna(median)
     create_log_num(featname, alldf, traindf, work_all, work_train)
+
+def log_custom_build_year(featname, traindf, alldf):
+    work_all = pd.to_numeric(alldf["yearbuilt"]) - 1770
+    median = work_all.median() # for imputation
+    work_all = work_all.fillna(median)
+    work_train = (pd.to_numeric(traindf["yearbuilt"]) - 1770).fillna(median)
+    create_log_num(featname, alldf, traindf, work_all, work_train)
