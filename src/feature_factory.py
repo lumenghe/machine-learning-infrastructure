@@ -264,3 +264,15 @@ def log_custom_build_year(featname, traindf, alldf):
     work_all = work_all.fillna(median)
     work_train = (pd.to_numeric(traindf["yearbuilt"]) - 1770).fillna(median)
     create_log_num(featname, alldf, traindf, work_all, work_train)
+
+def air_conditioning_cat(featname, traindf, alldf):
+    def map_to_cat(x):
+        if math.isnan(x):
+            return 0
+        elif int(x) == 1:
+            return 1
+        elif int(x) == 13:
+            return 2
+        else:
+            return 3
+    create_one_hot_encoding(featname, traindf, alldf, map_to_cat, "airconditioningtypeid")
