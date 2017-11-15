@@ -276,3 +276,17 @@ def air_conditioning_cat(featname, traindf, alldf):
         else:
             return 3
     create_one_hot_encoding(featname, traindf, alldf, map_to_cat, "airconditioningtypeid")
+
+def room_count_cat(featname, traindf, alldf):
+    def map_to_cat(x):
+        if math.isnan(x):
+            return 0
+        elif int(x) == 0:
+            return 1
+        elif 1 <= int(x) <= 3:
+            return 2
+        elif int(x) >= 10:
+            return 3
+        else: # 4 to 9
+            return int(x)
+    create_one_hot_encoding(featname, traindf, alldf, map_to_cat, "roomcnt")
