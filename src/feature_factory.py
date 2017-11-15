@@ -290,3 +290,16 @@ def room_count_cat(featname, traindf, alldf):
         else: # 4 to 9
             return int(x)
     create_one_hot_encoding(featname, traindf, alldf, map_to_cat, "roomcnt")
+
+def region_county_cat(featname, traindf, alldf):
+    def map_to_cat(x):
+        if math.isnan(x):
+            return 0
+        if int(x) == 1286:
+            return 1
+        elif int(x) == 2061:
+            return 2
+        elif int(x) == 3101:
+            return 3
+        return 0
+    create_one_hot_encoding(featname, traindf, alldf, map_to_cat, "regionidcounty")
