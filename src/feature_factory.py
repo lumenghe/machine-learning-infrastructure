@@ -303,3 +303,11 @@ def region_county_cat(featname, traindf, alldf):
             return 3
         return 0
     create_one_hot_encoding(featname, traindf, alldf, map_to_cat, "regionidcounty")
+
+def property_land_use_cat(featname, traindf, alldf):
+    d = {246:1, 247:2, 248:3, 261:4, 266:5, 269:6}
+    def map_to_cat(x):
+        if math.isnan(x):
+            return 0
+        return d.get(int(x), 0)
+    create_one_hot_encoding(featname, traindf, alldf, map_to_cat, "propertylandusetypeid")
