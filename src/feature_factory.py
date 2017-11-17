@@ -311,3 +311,14 @@ def property_land_use_cat(featname, traindf, alldf):
             return 0
         return d.get(int(x), 0)
     create_one_hot_encoding(featname, traindf, alldf, map_to_cat, "propertylandusetypeid")
+
+def fips_cat(featname, traindf, alldf):
+    def map_to_cat(x):
+        if x == "06037":
+            return 0
+        elif x == "06509":
+            return 1
+        elif x == "06111":
+            return 2
+        return 0
+    create_one_hot_encoding(featname, traindf, alldf, map_to_cat, "fips", to_numeric=False)
