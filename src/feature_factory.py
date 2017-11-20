@@ -322,3 +322,14 @@ def fips_cat(featname, traindf, alldf):
             return 2
         return 0
     create_one_hot_encoding(featname, traindf, alldf, map_to_cat, "fips", to_numeric=False)
+
+def bedroom_count_cat(featname, traindf, alldf):
+    def map_to_cat(x):
+        if math.isnan(x):
+            return 0
+        if 0 <= int(x) <= 6:
+            return int(x)
+        elif 7 <= int(x) <= 16:
+            return 7
+        return 0
+    create_one_hot_encoding(featname, traindf, alldf, map_to_cat, "bedroomcnt")
