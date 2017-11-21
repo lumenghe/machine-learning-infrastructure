@@ -333,3 +333,14 @@ def bedroom_count_cat(featname, traindf, alldf):
             return 7
         return 0
     create_one_hot_encoding(featname, traindf, alldf, map_to_cat, "bedroomcnt")
+
+def bathroom_count_cat(featname, traindf, alldf):
+    d = {0:1, 1:2, 1.5:3, 2.0:4, 2.5:5, 3.0:6, 3.5:7, 4:8, 4.5:9, 5:10}
+    def map_to_cat(x):
+        if math.isnan(x):
+            return 0
+        if 5.5 <= x <= 20:
+            return 10
+        else:
+            return d.get(x, 0)
+    create_one_hot_encoding(featname, traindf, alldf, map_to_cat, "bathroomcnt")

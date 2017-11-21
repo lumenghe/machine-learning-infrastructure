@@ -11,3 +11,6 @@ class Model(BaseModel):
         super(Model, self).__init__(config)
         self.model = None
         self.baseline = config["baseline"]
+
+    def init_train_data(self):
+        super(Model, self).init_train_data_base()
