@@ -344,3 +344,12 @@ def bathroom_count_cat(featname, traindf, alldf):
         else:
             return d.get(x, 0)
     create_one_hot_encoding(featname, traindf, alldf, map_to_cat, "bathroomcnt")
+
+def unit_count_cat(featname, traindf, alldf):
+    d = {1:1, 2:2, 3:3, 4:4}
+    def map_to_cat(x):
+        if math.isnan(x):
+            return 0
+        else:
+            return d.get(int(x), 0)
+    create_one_hot_encoding(featname, traindf, alldf, map_to_cat, "unitcnt")
