@@ -353,3 +353,11 @@ def unit_count_cat(featname, traindf, alldf):
         else:
             return d.get(int(x), 0)
     create_one_hot_encoding(featname, traindf, alldf, map_to_cat, "unitcnt")
+
+def building_quality_cat(featname, traindf, alldf):
+    d = {7:1, 4:2, 1:3, 10:4}
+    def map_to_cat(x):
+        if math.isnan(x):
+            return 0
+        return d.get(int(x), 0)
+    create_one_hot_encoding(featname, traindf, alldf, map_to_cat, "buildingqualitytypeid")
