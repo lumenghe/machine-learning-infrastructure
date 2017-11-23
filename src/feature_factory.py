@@ -361,3 +361,14 @@ def building_quality_cat(featname, traindf, alldf):
             return 0
         return d.get(int(x), 0)
     create_one_hot_encoding(featname, traindf, alldf, map_to_cat, "buildingqualitytypeid")
+
+def garage_count_cat(featname, traindf, alldf):
+    d = {0:0, 1:1, 2:2, 3:3}
+    def map_to_cat(x):
+        if math.isnan(x):
+            return 0
+        if 0 <= x <= 3:
+            return x+1
+        else:
+            return 5
+    create_one_hot_encoding(featname, traindf, alldf, map_to_cat, "garagecarcnt")
