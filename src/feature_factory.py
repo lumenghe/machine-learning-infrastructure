@@ -372,3 +372,13 @@ def garage_count_cat(featname, traindf, alldf):
         else:
             return 5
     create_one_hot_encoding(featname, traindf, alldf, map_to_cat, "garagecarcnt")
+
+def number_stories_cat(featname, traindf, alldf):
+    def map_to_cat(x):
+        if math.isnan(x):
+            return 0
+        if 1 <= x <= 2:
+            return x
+        else:
+            return 3
+    create_one_hot_encoding(featname, traindf, alldf, map_to_cat, "numberofstories")
