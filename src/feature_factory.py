@@ -396,3 +396,8 @@ def property_county_land_use_cat(featname, traindf, alldf):
     def map_to_cat(x):
         return d.get(str(x), 0)
     create_one_hot_encoding(featname, traindf, alldf, map_to_cat, "propertycountylandusecode", to_numeric=False)
+
+def sq_binary1(featname, traindf, alldf):
+    work_all = alldf["finishedsquarefeet12"].map(lambda x: 0 if math.isnan(x) else 1)
+    work_train = traindf["finishedsquarefeet12"].map(lambda x: 0 if math.isnan(x) else 1)
+    dump_static(featname, alldf, traindf, work_all, work_train)
