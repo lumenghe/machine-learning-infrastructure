@@ -22,6 +22,3 @@ class Model(BaseModel):
             }
         self.num_boost_round = config["num_boost_round"]
         self.early_stopping_round = config["early_stopping_round"]
-
-    def init_train_data(self):
-        super(Model, self).init_train_data_base()

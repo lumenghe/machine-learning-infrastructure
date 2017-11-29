@@ -390,9 +390,3 @@ def heating_cat(featname, traindf, alldf):
             return 0
         return d.get(int(x), 0)
     create_one_hot_encoding(featname, traindf, alldf, map_to_cat, "heatingorsystemtypeid")
-
-def property_county_land_use_cat(featname, traindf, alldf):
-    d = {"0100":1, "122":2, "010C":3, "0101":4, "34":5, "1111":6, "1":7, "010E":8, "010D":9, "0200":10, "1129":11, "1110":12, "0400":13, "0300":14, "012C":15, "1128":16, "0104":17}
-    def map_to_cat(x):
-        return d.get(str(x), 0)
-    create_one_hot_encoding(featname, traindf, alldf, map_to_cat, "propertycountylandusecode", to_numeric=False)
