@@ -406,3 +406,17 @@ def sq_binary2(featname, traindf, alldf):
     work_all = alldf["finishedsquarefeet50"].map(lambda x: 0 if math.isnan(x) else 1)
     work_train = traindf["finishedsquarefeet50"].map(lambda x: 0 if math.isnan(x) else 1)
     dump_static(featname, alldf, traindf, work_all, work_train)
+
+def sq_binary3(featname, traindf, alldf):
+    work_all = alldf["finishedsquarefeet15"].map(lambda x: 0 if math.isnan(x) else 1)
+    work_train = traindf["finishedsquarefeet15"].map(lambda x: 0 if math.isnan(x) else 1)
+    dump_static(featname, alldf, traindf, work_all, work_train)
+
+def sq_binary4(featname, traindf, alldf):
+    work_all = alldf["finishedsquarefeet6"].map(lambda x: 0 if math.isnan(x) else 1)
+    work_train = traindf["finishedsquarefeet6"].map(lambda x: 0 if math.isnan(x) else 1)
+    dump_static(featname, alldf, traindf, work_all, work_train)
+
+
+"""
+Oracles
