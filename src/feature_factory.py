@@ -421,3 +421,10 @@ def sq_binary4(featname, traindf, alldf):
 """
 Oracles
 """
+def logerror_from_median_sign(featname, traindf):
+    median = traindf["logerror"].median()
+    signs = [1 if error > 0 else -1 for error in (traindf["logerror"] - median).values]
+    # Generate train features
+    feats = pd.DataFrame(signs, index=traindf.index, columns=[featname])
+    feats.index.name = traindf.index.name
+    write_feats(feats, constant.FEATURE_FACTORY_TRAIN, featname)
