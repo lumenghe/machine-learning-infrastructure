@@ -439,3 +439,38 @@ def logerror_from_median_absolute(featname, traindf):
 
 """
 Main routine
+"""
+FACTORIES = [
+    ("past_month_nb_trans_zip", past_month_transactions_in_zipcode, "number of transactions in the same zipcode during previous month", "num"),
+    ("past_month_mean_error_zip", past_month_mean_error_in_zipcode, "error mean in the same zipcode during previous month", "num"),
+    ("time_origin_transaction", time_from_origin_to_transaction, "time (in years) from 20160101 to current transaction date (mid of month for out-of-sample prediction)", "num"),
+    ("yard_recorded", yard_recorded, "indicates if yard size is recorded", "num"),
+    ("log_tax_value", log_tax_value, "log of 'taxvaluedollarcnt' (better distribution than base value)", "num"),
+    ("log_land_tax_value", log_land_tax_value, "log of 'landtaxvaluedollarcnt' (better distribution than base value)", "num"),
+    ("log_tax_amount", log_tax_amount, "log of 'taxamount' (better distribution than base value)", "num"),
+    ("log_structure_tax_value", log_structure_tax_value, "log of 'structuretaxvaluedollarcnt' (better distribution than base value)", "num"),
+    ("log_lot_size", log_lot_size, "log of 'lotsizesquarefeet' (better distribution than base value)", "num"),
+    ("log_custom_build_year", log_custom_build_year, "log of 'yearbuilt' minus 1770 (best correlation)", "num"),
+    ("air_conditioning_cat", air_conditioning_cat, "one-hot encoding for air conditioning", "cat"),
+    ("room_count_cat", room_count_cat, "one-hot encoding for room count", "cat"),
+    ("region_county_cat", region_county_cat, "one-hot encoding for region county", "cat"),
+    ("property_land_use_cat", property_land_use_cat, "one-hot encoding for property land use", "cat"),
+    ("fips_cat", fips_cat, "one-hot encoding for fips", "cat"),
+    ("bedroom_count_cat", bedroom_count_cat, "one-hot encoding for bedroom count", "cat"),
+    ("bathroom_count_cat", bathroom_count_cat, "one-hot encoding for bathroom count", "cat"),
+    ("unit_count_cat", unit_count_cat, "one-hot encoding for 'unitcnt'", "cat"),
+    ("building_quality_cat", building_quality_cat, "one-hot encoding for 'buildingqualitytypeid'", "cat"),
+    ("garage_count_cat", garage_count_cat, "one-hot encoding for 'garagecarcnt'", "cat"),
+    ("number_stories_cat", number_stories_cat, "one-hot encoding for 'numberofstories'", "cat"),
+    ("property_county_land_use_cat", property_county_land_use_cat, "one-hot encoding for 'propertycountylandusecode'", "cat"),
+    ("heating_cat", heating_cat, "one-hot encoding for 'heatingorsystemtypeid'", "cat"),
+    ("sq_binary1", sq_binary1, "binary indictor for finishedsquarefeet12", "num"),
+    ("sq_binary2", sq_binary2, "binary indictor for finishedsquarefeet50", "num"),
+    ("sq_binary3", sq_binary3, "binary indictor for finishedsquarefeet15", "num"),
+    ("sq_binary4", sq_binary4, "binary indictor for finishedsquarefeet6", "num"),
+]
+
+ORACLES = [
+    ("logerror_from_median_sign", logerror_from_median_sign, "sign of logerror - its median on all train data", "num"),
+    ("logerror_from_median_absolute", logerror_from_median_absolute, "absolute value of logerror - its median on all train data", "num"),
+]
