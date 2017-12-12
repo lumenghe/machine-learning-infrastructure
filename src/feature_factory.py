@@ -428,3 +428,14 @@ def logerror_from_median_sign(featname, traindf):
     feats = pd.DataFrame(signs, index=traindf.index, columns=[featname])
     feats.index.name = traindf.index.name
     write_feats(feats, constant.FEATURE_FACTORY_TRAIN, featname)
+
+def logerror_from_median_absolute(featname, traindf):
+    median = traindf["logerror"].median()
+    vals = (traindf["logerror"] - median).abs()
+    # Generate train features
+    feats = pd.DataFrame(vals.values, index=traindf.index, columns=[featname])
+    feats.index.name = traindf.index.name
+    write_feats(feats, constant.FEATURE_FACTORY_TRAIN, featname)
+
+"""
+Main routine
