@@ -41,3 +41,6 @@ class Model(BaseModel):
             self.model = SVR(kernel='rbf', C=1e3, gamma=0.1)
            # self.model = SVR(kernel='linear', C=1e3)
            # self.model = SVR(kernel='poly', C=1e3, degree=2)
+
+    def init_train_data(self):
+        super(Model, self).init_train_data_base()
