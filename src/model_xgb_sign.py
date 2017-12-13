@@ -17,3 +17,6 @@ class Model(BaseModel):
         self.settings["silent"] = 1
         self.num_round = config["num_round"]
         self.early_stopping_rounds = config["early_stopping_rounds"]
+
+    def init_train_data(self):
+        super(Model, self).init_train_data_base()

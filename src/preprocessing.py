@@ -40,3 +40,12 @@ def preprocess(df, config, model=None, mode=None, no_reduction=False):
             raise ValueError("Unknown preprocessing module '{}'".format(pp))
     print(". Done.", flush=True)
     return df
+
+def base(df, config, model=None):
+    print(". base", end="", flush=True)
+#    print(df.dtypes)
+    for c in df.dtypes[df.dtypes == object].index.values:
+        df[c] = (df[c] == True)
+#    print(df)
+#    assert 0
+    return df
