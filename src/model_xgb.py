@@ -40,3 +40,6 @@ class Model(BaseModel):
             raise NotImplementedError
         else:
             raise ValueError("unknown training mode '{}'".format(self.training_mode))
+
+    def init_train_data(self):
+        super(Model, self).init_train_data_base()

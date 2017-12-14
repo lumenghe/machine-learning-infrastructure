@@ -25,6 +25,3 @@ class Model(BaseModel):
 
     def init_train_data(self):
         super(Model, self).init_train_data_base()
-
-    def init_submit_data(self, mode):
-        super(Model, self).init_submit_data_base(mode)
