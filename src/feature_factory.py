@@ -474,3 +474,47 @@ ORACLES = [
     ("logerror_from_median_sign", logerror_from_median_sign, "sign of logerror - its median on all train data", "num"),
     ("logerror_from_median_absolute", logerror_from_median_absolute, "absolute value of logerror - its median on all train data", "num"),
 ]
+
+def master_factory():
+    print("[FEATURE FACTORY]")
+    t0 = time.time()
+    # Load data
+    print("LOADING RAW DATA...")
+    traindf = merge_data(labeled_only=True)
+    alldf  = merge_data(labeled_only=False)
+    print("STARTING MASTER FACTORY...\nUsing compression: {}".format(constant.FEATURE_FACTORY_COMPRESSION))
+    scores = []
+    # Create features
+    for featname, factory, desc, feattype in FACTORIES:
+        t = time.time()
+        print("FACTORY {}: {}".format(featname, desc))
+        factory(featname, traindf, alldf)
+        train_feats = read_feats(constant.FEATURE_FACTORY_TRAIN, featname)
+        if feattype == "num":
+            score = "correlation with log error = {0:.2f} %".format(100*train_feats[featname].corr(traindf["logerror"]))
+        elif feattype == "cat":
+            score = "log error mean/std by cat:"
+            for col in train_feats.columns:
+                mean = traindf["logerror"][train_feats[col] == 1].mean()
+                std = traindf["logerror"][train_feats[col] == 1].std()
+                score += " {0:.4f}/{1:.4f}".format(mean, std)
+        else:
+            raise ValueError("Unknown feature type '{}'".format(feattype))
+        scores.append(score)
+        print("    {}".format(score))
+        del train_feats
+        gc.collect()
+        s = time.time() - t
+        m, s = divmod(s, 60)
+        h, m = divmod(m, 60)
+        total_time = "%d:%02d:%02d" % (h, m, s)
+        print("    RUNTIME = {}".format(total_time))
+    # Write feature definitions
+    with open(constant.FEATURE_FACTORY_DEFINITIONS, "w") as fdef:
+        defs = "\n".join(["{0} := {1} (type = {2}, {3})".format(featname, desc, ctype, score) for (featname, _, desc, ctype), score in zip(FACTORIES, scores)])
+        fdef.write(defs)
+    s = time.time() - t0
+    m, s = divmod(s, 60)
+    h, m = divmod(m, 60)
+    total_time = "%d:%02d:%02d" % (h, m, s)
+    print("\nTOTAL RUNTIME = {}".format(total_time))
