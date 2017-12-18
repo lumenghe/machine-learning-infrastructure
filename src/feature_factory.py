@@ -546,3 +546,7 @@ def master_oracle():
     total_time = "%d:%02d:%02d" % (h, m, s)
     print("\nTOTAL RUNTIME = {}".format(total_time))
 
+
+if __name__ == "__main__":
+#    master_factory()
+    master_oracle()
