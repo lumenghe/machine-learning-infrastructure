@@ -518,3 +518,31 @@ def master_factory():
     h, m = divmod(m, 60)
     total_time = "%d:%02d:%02d" % (h, m, s)
     print("\nTOTAL RUNTIME = {}".format(total_time))
+
+def master_oracle():
+    print("[ORACLE FACTORY]")
+    t0 = time.time()
+    # Load data
+    print("LOADING RAW DATA...")
+    traindf = merge_data(labeled_only=True)
+    print("STARTING MASTER FACTORY...\nUsing compression: {}".format(constant.FEATURE_FACTORY_COMPRESSION))
+    # Create oracles
+    for featname, factory, desc, feattype in ORACLES:
+        t = time.time()
+        print("ORACLE {}: {}".format(featname, desc))
+        factory(featname, traindf)
+        s = time.time() - t
+        m, s = divmod(s, 60)
+        h, m = divmod(m, 60)
+        total_time = "%d:%02d:%02d" % (h, m, s)
+        print("    RUNTIME = {}".format(total_time))
+    # Write feature definitions
+    with open(constant.ORACLE_FACTORY_DEFINITIONS, "w") as fdef:
+        defs = "\n".join(["{0} := {1} (type = {2})".format(featname, desc, ctype) for (featname, _, desc, ctype) in ORACLES])
+        fdef.write(defs)
+    s = time.time() - t0
+    m, s = divmod(s, 60)
+    h, m = divmod(m, 60)
+    total_time = "%d:%02d:%02d" % (h, m, s)
+    print("\nTOTAL RUNTIME = {}".format(total_time))
+
