@@ -40,3 +40,9 @@ class Model(BaseModel):
 #        with open (self.params, 'w') as f:
 #            f.write(str(self.model))
 #        print("Saved model at: {}".format(self.params))
+
+    def load(self):
+        return
+#        with open(self.params, 'r') as f:
+#           self.model = float(f.readline())
+#        print("Loaded model from: {}".format(self.params))
