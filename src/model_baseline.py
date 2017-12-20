@@ -34,3 +34,9 @@ class Model(BaseModel):
             raise ValueError("Unknown baseline '{}'".format(self.baseline))
         total_time = int(time.time() - t)
         print("Done in {} secs".format(total_time))
+
+    def save(self):
+        return
+#        with open (self.params, 'w') as f:
+#            f.write(str(self.model))
+#        print("Saved model at: {}".format(self.params))
