@@ -46,18 +46,3 @@ class Model(BaseModel):
 #        with open(self.params, 'r') as f:
 #           self.model = float(f.readline())
 #        print("Loaded model from: {}".format(self.params))
-
-    def predict(self, cat):
-        if cat == "train":
-            df = self.xtrain
-        elif cat == "valid":
-            df = self.xvalid
-        elif cat == "test":
-            df = self.xtest
-        if self.baseline == "mean":
-            pred = np.array([self.mean for i in range(len(df))], dtype=np.float32)
-        elif self.baseline == "mean_city":
-            pred = df["regionidcity"].apply(lambda c: self.mean_city.get(c, self.mean)).values
-        else:
-            raise ValueError("Unknown baseline '{}'".format(self.baseline))
-        return pred

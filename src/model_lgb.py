@@ -28,3 +28,15 @@ class Model(BaseModel):
 
     def init_submit_data(self, mode):
         super(Model, self).init_submit_data_base(mode)
+
+    def train(self):
+        print("Initializing train data...")
+        self.init_train_data()
+        print("Start model fitting...")
+        t = time.time()
+        lgb_train = lgb.Dataset(self.xtrain.values, self.ytrain.values.reshape(len(self.ytrain)))
+        lgb_valid = lgb.Dataset(self.xvalid.values, self.yvalid.values.reshape(len(self.yvalid)), reference=lgb_train)
+        self.model = lgb.train(self.settings, lgb_train, self.num_boost_round, [lgb_valid])
+        total_time = int(time.time() - t)
+        self.model.reset_parameter({"num_threads":1})
+        print("Trained model in {} secs".format(total_time))
