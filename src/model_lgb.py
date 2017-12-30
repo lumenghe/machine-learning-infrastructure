@@ -48,3 +48,7 @@ class Model(BaseModel):
     def load(self):
         self.model = lgb.Booster(model_file=self.params)
         print("Loaded model from: {}".format(self.params))
+
+    def predict_from_x(self, x):
+        pred = self.model.predict(x)
+        return pred
