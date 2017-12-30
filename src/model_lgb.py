@@ -40,3 +40,7 @@ class Model(BaseModel):
         total_time = int(time.time() - t)
         self.model.reset_parameter({"num_threads":1})
         print("Trained model in {} secs".format(total_time))
+
+    def save(self):
+        self.model.save_model(self.params)
+        print("Saved model at: {}".format(self.params))
