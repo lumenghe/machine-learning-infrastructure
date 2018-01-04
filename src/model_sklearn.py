@@ -47,3 +47,12 @@ class Model(BaseModel):
 
     def init_submit_data(self, mode):
         super(Model, self).init_submit_data_base(mode)
+
+    def train(self):
+        print("Initializing train data...")
+        self.init_train_data()
+        print("Start model fitting...")
+        t = time.time()
+        self.model.fit(self.xtrain.values, self.ytrain.values)
+        total_time = int(time.time() - t)
+        print("Trained model in {} secs".format(total_time))
