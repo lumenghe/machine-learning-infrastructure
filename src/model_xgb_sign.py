@@ -20,3 +20,15 @@ class Model(BaseModel):
 
     def init_train_data(self):
         super(Model, self).init_train_data_base()
+
+    def train(self):
+        print("Initializing train data...")
+        self.init_train_data()
+        print("Start model fitting...")
+        t = time.time()
+        xgb_train = xgb.DMatrix(self.xtrain.values, label=self.ytrain.values)
+        xgb_valid = xgb.DMatrix(self.xvalid.values, label=self.yvalid.values)
+        watchlist = [(xgb_train, "train"), (xgb_valid, "valid")]
+        self.model = xgb.train(self.settings, xgb_train, self.num_round, watchlist, early_stopping_rounds=self.early_stopping_rounds, verbose_eval=10)
+        total_time = int(time.time() - t)
+        print("Trained model in {} secs".format(total_time))

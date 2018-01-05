@@ -56,3 +56,15 @@ class Model(BaseModel):
         self.model.fit(self.xtrain.values, self.ytrain.values)
         total_time = int(time.time() - t)
         print("Trained model in {} secs".format(total_time))
+
+    def save(self):
+        joblib.dump(self.model, self.params)
+        print("Saved model at: {}".format(self.params))
+
+    def load(self):
+        self.model = joblib.load(self.params)
+        print("Loaded model from: {}".format(self.params))
+
+    def predict_from_x(self, x):
+        pred = self.model.predict(x)
+        return pred
