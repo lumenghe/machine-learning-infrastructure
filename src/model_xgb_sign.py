@@ -32,3 +32,7 @@ class Model(BaseModel):
         self.model = xgb.train(self.settings, xgb_train, self.num_round, watchlist, early_stopping_rounds=self.early_stopping_rounds, verbose_eval=10)
         total_time = int(time.time() - t)
         print("Trained model in {} secs".format(total_time))
+
+    def save(self):
+        self.model.save_model(self.params)
+        print("Saved model at: {}".format(self.params))
