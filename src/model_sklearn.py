@@ -60,3 +60,7 @@ class Model(BaseModel):
     def save(self):
         joblib.dump(self.model, self.params)
         print("Saved model at: {}".format(self.params))
+
+    def load(self):
+        self.model = joblib.load(self.params)
+        print("Loaded model from: {}".format(self.params))
