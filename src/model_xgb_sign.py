@@ -40,3 +40,8 @@ class Model(BaseModel):
     def load(self):
         self.model = xgb.Booster(model_file=self.params)
         print("Loaded model from: {}".format(self.params))
+
+    def predict_from_x(self, x):
+        xbg_data = xgb.DMatrix(x)
+        pred = self.model.predict(xbg_data)
+        return pred
