@@ -36,3 +36,7 @@ class Model(BaseModel):
     def save(self):
         self.model.save_model(self.params)
         print("Saved model at: {}".format(self.params))
+
+    def load(self):
+        self.model = xgb.Booster(model_file=self.params)
+        print("Loaded model from: {}".format(self.params))

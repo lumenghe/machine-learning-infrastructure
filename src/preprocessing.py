@@ -49,3 +49,11 @@ def base(df, config, model=None):
 #    print(df)
 #    assert 0
     return df
+
+def fillna(df, config):
+    print(". fillna", end="", flush=True)
+    v = config["fillna"]
+    if v is None:
+        raise ValueError("fillna value missing from config")
+    df = df.fillna(v)
+    return df
