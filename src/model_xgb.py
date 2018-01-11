@@ -46,3 +46,15 @@ class Model(BaseModel):
 
     def init_submit_data(self, mode):
         super(Model, self).init_submit_data_base(mode)
+
+    def train(self):
+        print("Initializing train data...")
+        self.init_train_data()
+        if self.training_mode == "base":
+            self.train_base()
+        elif self.training_mode == "grid":
+            self.train_grid()
+        elif self.training_mode == "random":
+            self.train_random()
+        else:
+            raise ValueError("unknown training mode '{}'".format(self.training_mode))
