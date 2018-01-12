@@ -45,3 +45,7 @@ class Model(BaseModel):
         xbg_data = xgb.DMatrix(x)
         pred = self.model.predict(xbg_data)
         return pred
+
+    def eval(self):
+        if self.config["eval_cat"] is not None:
+            sign_eval(self, self.config)
