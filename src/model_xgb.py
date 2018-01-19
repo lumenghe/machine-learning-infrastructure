@@ -68,3 +68,22 @@ class Model(BaseModel):
         self.model = xgb.train(self.settings, xgb_train, self.num_round, watchlist, early_stopping_rounds=self.early_stopping_rounds, verbose_eval=10)
         total_time = int(time.time() - t)
         print("Trained model in {} secs".format(total_time))
+
+    def train_grid(self):
+        print("Start model fitting in cross validation (grid mode)...")
+        t = time.time()
+        xgb_train = xgb.DMatrix(self.xtrain.values, label=self.ytrain.values)
+        xgb_valid = xgb.DMatrix(self.xvalid.values, label=self.yvalid.values)
+        watchlist = [(xgb_train, "train"), (xgb_valid, "valid")]
+        current_best = None
+        param_grid = ParameterGrid(self.settings)
+        for i, params in enumerate(param_grid):
+            print("Testing the following params ({}/{}): {}".format(i+1, len(param_grid), params))
+            eval_res = dict()
+            booster = xgb.train(params, xgb_train, self.num_round, watchlist, early_stopping_rounds=self.early_stopping_rounds, evals_result=eval_res, verbose_eval=10)
+            loss = eval_res["valid"]["mae"][booster.best_iteration]
+            if current_best is None or loss < current_best:
+                current_best = loss
+                self.model = booster
+        total_time = int(time.time() - t)
+        print("Trained model in {} secs".format(total_time))
