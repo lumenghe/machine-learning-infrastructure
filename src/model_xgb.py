@@ -87,3 +87,9 @@ class Model(BaseModel):
                 self.model = booster
         total_time = int(time.time() - t)
         print("Trained model in {} secs".format(total_time))
+
+    def train_random(self):
+        print("Start model fitting in cross validation (random mode)...")
+        #TODO
+        raise NotImplementedError
+        print("Trained model in {} secs".format(total_time))
