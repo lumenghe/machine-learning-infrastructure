@@ -93,3 +93,7 @@ class Model(BaseModel):
         #TODO
         raise NotImplementedError
         print("Trained model in {} secs".format(total_time))
+
+    def save(self):
+        self.model.save_model(self.params)
+        print("Saved model at: {}".format(self.params))
