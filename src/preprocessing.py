@@ -57,3 +57,13 @@ def fillna(df, config):
         raise ValueError("fillna value missing from config")
     df = df.fillna(v)
     return df
+
+def target_demean(df, config, model=None):
+    print(". target_demean", end="", flush=True)
+    target = config["target"]
+    train = df.loc[df.apply(lambda row: config["train_start"] <= row['transactiondate'] < config["train_end"], axis=1)]
+    mean = train[target].mean()
+    df[target] = df[target].values - mean
+    if model is not None:
+        model.mean_target = mean
+    return df
