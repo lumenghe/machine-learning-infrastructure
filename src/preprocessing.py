@@ -84,3 +84,12 @@ def polynomialfeatures(df, config):
     output_df = pd.DataFrame(output_nparray, columns = target_feature_names)
     df.join(output_df)
     return df
+
+def target_winsorize(df, config):
+    print(". target_winsorize", end="", flush=True)
+    target = config["target"]
+    train = df.loc[df.apply(lambda row: config["train_start"] <= row['transactiondate'] < config["train_end"], axis=1)]
+    left_quantile = train.quantile(config["target_winsor_left"])
+    right_quantile = train.quantile(config["target_winsor_right"])
+    df[target] = df[target].clip(left_quantile, right_quantile)
+    return df
