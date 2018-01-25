@@ -67,9 +67,3 @@ def target_demean(df, config, model=None):
     if model is not None:
         model.mean_target = mean
     return df
-
-def target_sign(df, config, model=None):
-    print(". target_sign", end="", flush=True)
-    target = config["target"]
-    df[target] = (df[target].values >= 0).astype(np.int32)
-    return df
