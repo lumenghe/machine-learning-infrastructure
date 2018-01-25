@@ -73,3 +73,14 @@ def target_sign(df, config, model=None):
     target = config["target"]
     df[target] = (df[target].values >= 0).astype(np.int32)
     return df
+
+def polynomialfeatures(df, config):
+    print(". polynomialfeatures", end="", flush=True)
+    x1, x2 = config['polynomialfeatures']
+    input_df = df[config['polynomialfeatures']]
+    poly = preprocessing.PolynomialFeatures(3)
+    output_nparray = poly.fit_transform(input_df)
+    target_feature_names = ['x'.join(['{}^{}'.format(pair[0],pair[1]) for pair in tuple if pair[1]!=0]) for tuple in [zip(config['polynomialfeatures'],p) for p in poly.powers_]]
+    output_df = pd.DataFrame(output_nparray, columns = target_feature_names)
+    df.join(output_df)
+    return df
