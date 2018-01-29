@@ -93,3 +93,11 @@ def target_winsorize(df, config):
     right_quantile = train.quantile(config["target_winsor_right"])
     df[target] = df[target].clip(left_quantile, right_quantile)
     return df
+
+def target_bound(df, config):
+    print(". target_bound", end="", flush=True)
+    target = config["target"]
+    left_bound = config["target_bound_left"]
+    right_bound = config["target_bound_right"]
+    df[target] = df[target].clip(left_bound, right_bound)
+    return df
