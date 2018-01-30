@@ -24,3 +24,17 @@ def get_model(config):
         return Model(config)
     else:
         raise ValueError("Model '{}' in not registered!".format(name))
+
+def run(config):
+    model = get_model(config)
+    print ('has_params=', model.has_params())
+    if not model.has_params() or config["force_rerun"]:
+        model.train()
+        model.save()
+    else:
+        model.load()
+    model.eval()
+    del model
+    gc.collect()
+    return
+

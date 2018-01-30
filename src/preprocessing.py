@@ -101,3 +101,14 @@ def target_bound(df, config):
     right_bound = config["target_bound_right"]
     df[target] = df[target].clip(left_bound, right_bound)
     return df
+
+def target_remove_outliers(df, config, no_reduction=False):
+    if no_reduction:
+        return df
+    print(". target_remove_outliers", end="", flush=True)
+    target = config["target"]
+    left_bound = config["target_remove_left"]
+    right_bound = config["target_remove_right"]
+    df = df[df[target] > left_bound]
+    df = df[df[target] < right_bound]
+    return df
