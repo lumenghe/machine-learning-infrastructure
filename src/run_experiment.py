@@ -38,3 +38,24 @@ def run(config):
     gc.collect()
     return
 
+
+if __name__  == "__main__":
+    configs = sys.argv[1:]
+    for cfg in configs:
+        t = time.time()
+        try:
+            print("#" * 80)
+            print("RUNNING {}".format(cfg))
+            print("#" * 80)
+            config = Config(cfg)
+            print(str(config))
+            run(config)
+        except:
+            print("RUN CRASHED!\n########### TRACE ###########".format(cfg))
+            traceback.print_exc()
+            print("######## END OF TRACE ########".format(cfg))
+        s = time.time() - t
+        m, s = divmod(s, 60)
+        h, m = divmod(m, 60)
+        total_time = "%d:%02d:%02d" % (h, m, s)
+        print("\nTOTAL RUNTIME = {}".format(total_time))
