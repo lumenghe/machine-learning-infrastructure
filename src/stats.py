@@ -46,3 +46,21 @@ def get_period_info(df, start_date, end_date, color, plot=False):
     print("[{0} {1}) mean = {2}, std = {3}, quartile_1 = {4}, median = {5}, quartile_1 = {6}, SKEW = {7} KURTOSIS = {8} data len={9}".format(
     start_date, end_date, mu, sig, quartile_1 , median, quartile_3 , skew(vals), kurtosis(vals), len(sub_df.index)))
 
+
+def plot_error_distribution(ypred, ytrue=None, title=None, output_fig=None, rng=(-0.4,0.4)):
+    fig,ax = plt.subplots(2)
+    if ytrue is None:
+        ax[0].hist(ypred, bins='auto', range=rng, normed=True, label="pred")
+    else:
+        ax[0].hist(ypred, bins='auto', alpha=0.5, range=rng, normed=True, label="pred")
+        ax[0].hist(ytrue, bins='auto', alpha=0.5, range=rng, normed=True, label="true")
+        ax[0].legend(loc="upper right")
+        diff = ypred.reshape(len(ypred)) - ytrue.reshape(len(ytrue))
+        ax[1].hist(diff, bins='auto', alpha=0.5, range=rng, normed=True, label="error")
+        ax[1].legend(loc="upper right")
+    if title is not None:
+        fig.suptitle(title, fontsize=10)
+    if output_fig is None:
+        plt.show()
+    else:
+        fig.savefig(output_fig)
